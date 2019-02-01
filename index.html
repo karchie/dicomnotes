@@ -4,10 +4,11 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>DICOM Explained</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+        <link rel="stylesheet" href="css/extra.css">
+		<link rel="stylesheet" href="css/theme/solarized.css">
 
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -23,9 +24,226 @@
 	</head>
 	<body>
 		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+		  <div class="slides">
+            <section>
+              <h3>DICOM Explained</h3>
+              <p class="fragment">Overview</p>
+              <ul style="list-style-type:none;">
+                <li class="fragment">What is it?</li>
+                <li class="fragment">DICOM binary dataset format</li>
+                <li class="fragment">DICOM model of the real world</li>
+              </ul>
+            </section>
+			<section> <!-- introduction -->
+              <section>
+                <h4>What is it?</h4>
+                <p class="fragment">The standard for communication and management of medical imaging information and related data</p>
+                <p>
+                  <span class="fragment">Vendor-independent formats and protocols</span>
+                  <span class="fragment"> (ha!)</span>
+                </p>
+                <p class="fragment">More stuff than anyone ever uses</p>
+              </section>
+              <section>
+                <h4>What is it?</h4>
+                <p class="fragment">A binary data format</p>
+                <p class="fragment">(also an XML representation)</p>
+                <p class="fragment">(also a JSON representation)</p>
+              </section>
+              <section>
+                <h4>What is it?</h4>
+                <p>A file format and directory structure</p>
+                <dl>
+                  <dt class="fragment">File format</dt>
+                  <dd class="fragment">DICOM data set (binary data)</dd>
+                  <dd class="fragment">...plus preamble, prefix, and file metainformation</dd>
+                  <dd class="fragment">"Part 10"</dd>
+                  <dt class="fragment">Directory structure</dt>
+                  <dd class="fragment">DICOMDIR (mostly for removable media)</dd>
+                </dl>
+              </section>
+              <section>
+                <h4>What is it?</h4>
+                <p>A set of network protocols<br>for finding and moving DICOM data<br>(DIMSE-C)
+                  <ul class="fragment" style="list-style-type:none;">
+                    <li>C-STORE</li>
+                    <li>C-FIND</li>
+                    <li>C-GET</li>
+                    <li>C-MOVE</li>
+                    <li>C-ECHO</li>
+                  </ul>
+                </p>
+                <p class="fragment">(Best suited and mostly used within an institution)</p>
+              </section>
+              <section>
+                <h4>What is it?</h4>
+                <p>Another set of network protocols<br>for retrieving DICOM data</p>
+                <ul class="fragment" style="list-style-type:none;">
+                  <li>WADO-URI</li>
+                </ul>
+              </section>
+              <section>
+                <h4>What is it?</h4>
+                <p>Yet another set of network protocols for DICOM data</p>
+                <ul class="fragment" style="list-style-type:none;">
+                  <li>WADO-RS</li>
+                  <li>STOW-RS</li>
+                  <li>QIDO-RS</li>
+                  <li>UPS-RS</li>
+                </ul>
+              </section>
+              <section>
+                <h4>What else is it?</h4>
+                <p class="fragment">Controlled terminology (ontology)</p>
+                <p class="fragment">Modality worklist</p>
+                <p class="fragment">...and more</p>
+                <p class="fragment">...and growing</p>
+              </section>
+            </section>
+
+            <section>
+              <section>
+                <h4>DICOM binary data</h4>
+                <img data-src="http://dicom.nema.org/medical/dicom/current/output/html/figures/PS3.5_7.1-1.svg">
+              </section>
+              <section>
+                <img data-src="http://dicom.nema.org/medical/dicom/current/output/html/figures/PS3.5_7.1-1.svg">
+                <h4>Tag</h4>
+                <ul style="list-style-type:none;">
+                  <li>identifies the data element</li>
+                  <li>2 x 16 bit (4 bytes) unsigned integers</li>
+                  <li>range 0&ndash;4,294,967,295</li>
+                  <li>easier to read in base 16: (gggg,eeee)</li>
+                </ul>
+              </section>
+              
+              <section>
+                <h4>Tag examples</h4>
+                <table style="border:none;">
+                  <tr><td>Study Date</td><td>(0008,0020)</td></tr>
+                  <tr><td>Modality</td><td>(0008,0060)</td></tr>
+                  <tr><td>Institution Name</td><td>(0008,0080)</td></tr>
+                  <tr><td>Patient ID</td><td>(0010,0020)</td></tr>
+                  <tr><td>Series Number</td><td>(0020,0011)</td></tr>
+                  <tr><td>Rows</td><td>(0028,0010)</td></tr>
+                  <tr><td>Columns</td><td>(0028,0011)</td></tr>
+                  <tr><td>Requesting Physician</td><td>(0032,1032)</td></tr>
+                </table>
+              </section>
+              <section id="VR">
+                <img data-src="http://dicom.nema.org/medical/dicom/current/output/html/figures/PS3.5_7.1-1.svg">
+                <h4>Value representation (VR)</h4>
+                <ul style="list-style-type:none;">
+                  <li>2 character name for value data type</li>
+                </ul>
+              </section>
+              <section data-background-iframe="http://dicom.nema.org/medical/dicom/current/output/chtml/part05/sect_6.2.html#table_6.2-1" data-background-interactive>
+              </section>
+              <section>
+                <img data-src="http://dicom.nema.org/medical/dicom/current/output/html/figures/PS3.5_7.1-1.svg">
+                <h4>Value length</h4>
+              </section>
+              <section data-background-iframe="http://dicom.nema.org/medical/dicom/current/output/chtml/part05/chapter_7.html#table_7.1-1" data-background-interactive>
+              </section>
+              <section>
+                <img data-src="http://dicom.nema.org/medical/dicom/current/output/html/figures/PS3.5_7.1-1.svg">
+                <h4>Value</h4>
+              </section>
+              <section>
+                <h4>Example DICOM file</h4>
+                <p>(viewed in dcmdump)</p>
+                <aside class=notes>
+                  <p>This is parsed, not raw: things are hidden, things are decoded</p>
+                  <p>File metainformation header</p>
+                  <p>transfer syntax</p>
+                </aside>
+              </section>
+              <section>
+                <h4>Transfer syntax</h4>
+                <ul style="list-style-type:none;">
+                  <li class="fragment">Explicit VR vs. Implicit VR</li>
+                  <img class="fragment current-visible" data-src="http://dicom.nema.org/medical/dicom/current/output/html/figures/PS3.5_7.1-1.svg">
+                  <li class="fragment">big- vs. little-endian</li>
+                  <table class="fragment current-visible">
+                    <td><div style="background: white;">
+                        <a title="R. S. Shaw [Public domain], from Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Big-Endian.svg">
+                          <img width="256" alt="Big-Endian" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Big-Endian.svg/256px-Big-Endian.svg.png">
+                        </a>
+                      </div>
+                    </td>
+                    <td><div style="background: white;">
+                        <a title="R. S. Shaw [Public domain], from Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Little-Endian.svg">
+                          <img width="256" alt="Little-Endian" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Little-Endian.svg/256px-Little-Endian.svg.png">
+                        </a>
+                    </div></td>
+                  </table>
+                  <li class="fragment">deflation</li>
+                  <li class="fragment">Pixel Data encapsulation and encoding</li>
+                </ul>
+              </section>
+              <section>
+                <h4>Example DICOM file</h4>
+                <p>(viewed as hex dump)</p>
+              </section>
+              <section>
+                <h4>SOP Classes and IODs</h4>
+                <ul>
+                  <li class="fragment">
+                    Each DICOM dataset is content (Object) structured for a task (Service)
+                  </li>
+                  <li class="fragment">
+                    Service-Object Pair (SOP) Class identifies the content type and task
+                  </li>
+                  <li class="fragment current-visible">
+                    Examples:
+                    <ul style="list-style-type:none;">
+                      <li><small>MR Image Storage</small></li>
+                      <li><small>Basic Text SR Storage</small></li>
+                      <li><small>Grayscale Softcopy Presentation State Storage</small></li>
+                      <li><small>Digital X-Ray Image Storage&ndash;For Presentation</small></li>
+                      <li><small>Digital X-Ray Image Storage&ndash;For Processing</small></li>
+                      <li><small>Patient Root Query/Retrieve Information Model&ndash;FIND</small></li>
+                    </ul>
+                  </li>
+                  <li class=fragment>Each object type has some elements that are required, others optional</li>
+                  <li class=fragment>Information Object Descriptions (IODs) list the required and optional elements</li>
+                </ul>
+              </section>
+              <section data-background-iframe="http://dicom.nema.org/medical/dicom/current/output/chtml/part03/sect_A.4.3.html#table_A.4-1" data-background-interactive>
+              </section>
+            </section>
+            <section>
+              <section>
+                <h4>DICOM model of the real world</h4>
+              </section>
+              <section data-background-image="http://dicom.nema.org/medical/dicom/current/output/html/figures/PS3.3_7-1a.svg" data-background-size=contain>
+              </section>
+              <section>
+                <p>Each instance and its context are identified by:</p>
+                <dl>
+                  <dt>Patient</dt><dd>Patient ID (0010,0020)</dd>
+                  <dt>Study</dt><dd>Study Instance UID (0020,000D)</dd>
+                  <dt>Series</dt><dd>Series Instance UID (0020,000E)</dd>
+                  <dt>SOP Class</dt><dd>SOP Class UID (0008,0016)</dd>
+                  <dt>Instance</dt><dd>SOP Instance UID (0008,0018)</dd>
+                </dl>
+              </section>
+            </section>
+            <section>
+              <h2>Leftover topics</h2>
+              <ul style="list-style-type:none;">
+                <li>Sequences</li>
+                <li>Private Tags</li>
+                <li>Pixel Data</li>
+                <li>Conformance statements</li>
+                <li>Modality Worklist / MPPS</li>
+                <li>GSPS</li>
+                <li>SR</li>
+                <li>DIMSE-C</li>
+                <li>WADO(-URI)</li>
+                <li>*-RS</li>
+              </ul>
+            </section>
 			</div>
 		</div>
 
