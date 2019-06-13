@@ -25,7 +25,8 @@
 	<body>
 		<div class="reveal">
 		  <div class="slides">
-            <section>
+            <!-- Part 1 - originally presented 2019-01-31 in Denver -->
+            <section id="part-1">
               <h3>DICOM Explained</h3>
               <p class="fragment">Overview</p>
               <ul style="list-style-type:none;">
@@ -137,13 +138,46 @@
                   <li>2 character name for value data type</li>
                 </ul>
               </section>
-              <section data-background-iframe="http://dicom.nema.org/medical/dicom/current/output/chtml/part05/sect_6.2.html#table_6.2-1" data-background-interactive>
+              <section>
+                <h4>Value representations (VR)</h4>
+                <table style="border:none;">
+                  <tr><td>AE</td><td>Application entity</td></tr>
+                  <tr><td>AS</td><td>Age string</td></tr>
+                  <tr><td>AT</td><td>Attribute tag</td></tr>
+                  <tr><td>CS</td><td>Code string</td></tr>
+                  <tr><td>DA/TM/DT</td><td>Date / time / date time</td></tr>
+                  <tr><td>DS/IS</td><td>Decimal/integer string</td></tr>
+                  <tr><td>FL/FD</td><td>Floating point single/double</td></tr>
+                  <tr><td>SH/LO</td><td>Short/long string</td></tr>
+                  <tr><td>ST/LT</td><td>Short/long text</td></tr>
+                </table>
+              </section>
+              <section>
+                <h4>More VRs</h4>
+                <table style="border:none;">
+                  <tr><td>OB/OW/OD/OF/OL/OV</td><td>Other byte/word/double/float/long/very long</td></tr>
+                  <tr><td>PN</td><td>Person name</td></tr>
+                  <tr><td>SL/UL/SS/US/SV/UV</td><td>Signed/unsigned long/short/very long</td></tr>
+                  <tr><td>UC/UT</td><td>Unlimited characters/text</td></tr>
+                  <tr><td>UI</td><td>Unique identifier (UID)</td></tr>
+                  <tr><td>UR</td><td>Universal Resource Identifier/Locator (URI/URL)</td></tr>
+                  <tr><td>UN</td><td>Unknown</td></tr>
+                  <tr><td>SQ</td><td>Sequence</td></tr>
+                </table>
               </section>
               <section>
                 <img data-src="http://dicom.nema.org/medical/dicom/current/output/html/figures/PS3.5_7.1-1.svg">
                 <h4>Value length</h4>
               </section>
+              <!--
               <section data-background-iframe="http://dicom.nema.org/medical/dicom/current/output/chtml/part05/chapter_7.html#table_7.1-1" data-background-interactive>
+                -->
+                <ul style="list-style-type:none;">
+                  <li class="fragment">Different VRs use length differently</li>
+                  <li class="fragment">Most VRs use next 2 bytes after VR for length (0&ndash;65,535)</li>
+                  <li class="fragment">VRs that might have big values (OB, UT, UN, SQ, others)
+                    have blank 2 bytes after VR, then 4 bytes of length (0&ndash;4,294,967,295)</li>
+                </ul>
               </section>
               <section>
                 <img data-src="http://dicom.nema.org/medical/dicom/current/output/html/figures/PS3.5_7.1-1.svg">
@@ -244,7 +278,174 @@
                 <li>*-RS</li>
               </ul>
             </section>
-			</div>
+
+            <!-- Part 2 - originally presented 2019-06-13 in Denver -->
+            <section id="part-2">
+              <h3>DICOM Explained, continued</h3>
+              <p class="fragment">Overview</p>
+              <ul style="list-style-type:none;">
+                <li class="fragment">Review: DICOM binary dataset format</li>
+                <li class="fragment">SQ element type</li>
+                <li class="fragment">Structured Reports</li>
+              </ul>
+            </section>
+
+            <section>
+              <section>
+                <h4>DICOM binary data (review)</h4>
+                <img data-src="http://dicom.nema.org/medical/dicom/current/output/html/figures/PS3.5_7.1-1.svg">
+                <p>A DICOM object is a sequence of elements</p>
+              </section>
+              <section>
+                <img data-src="http://dicom.nema.org/medical/dicom/current/output/html/figures/PS3.5_7.1-1.svg">
+                <h4>Tag</h4>
+                <ul style="list-style-type:none;">
+                  <li class="fragment">identifies the data element</li>
+                  <li class="fragment">2 x 16 bit (2x2 bytes) unsigned integers</li>
+                  <li class="fragment">4,294,967,295 possible values</li>
+                  <li class="fragment">easier to read in base 16: (gggg,eeee)</li>
+                </ul>
+              </section>
+              
+              <section>
+                <h4>Tag examples</h4>
+                <table style="border:none;">
+                  <tr><td>Study Date</td><td>(0008,0020)</td></tr>
+                  <tr><td>Modality</td><td>(0008,0060)</td></tr>
+                  <tr><td>Institution Name</td><td>(0008,0080)</td></tr>
+                  <tr><td>Patient ID</td><td>(0010,0020)</td></tr>
+                  <tr><td>Series Number</td><td>(0020,0011)</td></tr>
+                  <tr><td>Rows</td><td>(0028,0010)</td></tr>
+                  <tr><td>Columns</td><td>(0028,0011)</td></tr>
+                  <tr><td>Requesting Physician</td><td>(0032,1032)</td></tr>
+                </table>
+              </section>
+              <section id="VR">
+                <img data-src="http://dicom.nema.org/medical/dicom/current/output/html/figures/PS3.5_7.1-1.svg">
+                <h4>Value representation (VR)</h4>
+                <ul style="list-style-type:none;">
+                  <li>2 character name for value data type</li>
+                </ul>
+              </section>
+              <section>
+                <h4>Value representations (VR)</h4>
+                <table style="border:none;">
+                  <tr><td>AE</td><td>Application entity</td></tr>
+                  <tr><td>AS</td><td>Age string</td></tr>
+                  <tr><td>AT</td><td>Attribute tag</td></tr>
+                  <tr><td>CS</td><td>Code string</td></tr>
+                  <tr><td>DA/TM/DT</td><td>Date / time / date time</td></tr>
+                  <tr><td>DS/IS</td><td>Decimal/integer string</td></tr>
+                  <tr><td>FL/FD</td><td>Floating point single/double</td></tr>
+                  <tr><td>SH/LO</td><td>Short/long string</td></tr>
+                  <tr><td>ST/LT</td><td>Short/long text</td></tr>
+                </table>
+              </section>
+              <section>
+                <h4>More VRs</h4>
+                <table style="border:none;">
+                  <tr><td>OB/OW/OD/OF/OL/OV</td><td>Other byte/word/double/float/long/very long</td></tr>
+                  <tr><td>PN</td><td>Person name</td></tr>
+                  <tr><td>SL/UL/SS/US/SV/UV</td><td>Signed/unsigned long/short/very long</td></tr>
+                  <tr><td>UC/UT</td><td>Unlimited characters/text</td></tr>
+                  <tr><td>UI</td><td>Unique identifier (UID)</td></tr>
+                  <tr><td>UR</td><td>Universal Resource Identifier/Locator (URI/URL)</td></tr>
+                  <tr><td>UN</td><td>Unknown</td></tr>
+                  <tr><td>SQ</td><td>Sequence (complicated)</td></tr>
+                </table>
+              </section>
+              <section>
+                <img data-src="http://dicom.nema.org/medical/dicom/current/output/html/figures/PS3.5_7.1-1.svg">
+                <h4>Value length</h4>
+                <ul style="list-style-type:none;">
+                  <li class="fragment">Different VRs represent length differently</li>
+                  <li class="fragment">Most VRs use next 2 bytes after VR for length (0&ndash;65,535)</li>
+                  <li class="fragment">VRs that might have big values (OB, UT, UN, SQ, ...)
+                    have blank 2 bytes after VR, then 4 bytes of length (0&ndash;4,294,967,295)</li>
+                </ul>
+              </section>
+              <section>
+                <img data-src="http://dicom.nema.org/medical/dicom/current/output/html/figures/PS3.5_7.1-1.svg">
+                <h4>Value</h4>
+                <ul style="list-style-type:none;">
+                  <li class="fragment">Simple VRs (PN, IS, UI) have simple values ("Archie^Kevin^A.", "42", "1.2.840.10008.1.2.1.99")</li>
+                  <li class="fragment">Some elements have more than one value&mdash;value multiplicity (VM), ex. "1\0\1"</li>
+                  <li class="fragment">OB, OD, OF, etc., are usually arrays of values</li>
+                  <li class="fragment">SQ is just different</li>
+                </ul>
+              </section>
+            </section>
+            <section>
+              <section>
+                <h4>Sequences (SQ)</h4>
+                <ul style="list-style-type:none;">
+                  <li class="fragment">A sequence contains zero or more items</li>
+                  <li class="fragment">Each item contains a set of data elements</li>
+                  <li class="fragment">...so each item is a DICOM object</li>
+                  <li class="fragment">...</li>
+                </ul>
+              </section>
+              <section>
+                <h4>Sequences: so what?</h4>
+                <ul style="list-style-type:none;">
+                  <li class="fragment">Can't view DICOM metadata as a simple table</li>
+                  <li class="fragment">(looking at you, DicomBrowser)</li>
+                  <li class="fragment">Structured Reports (SR) are built on nested objects</li>
+                </ul>
+              </section>
+            </section>
+            <section>
+              <section>
+                <h4>Structured Reporting (SR)</h4>
+                <ul style="list-style-type:none;">
+                  <li class="fragment">Used to organized and store non-image data (mostly)</li>
+                  <li class="fragment">Outline of coded values (standardized vocabulary), deepest levels often free text</li>
+                  <li class="fragment">Often contain references to image objects</li>
+                </ul>
+              </section>
+              <section>
+                <h4>Structured Reporting SOP classes</h4>
+                <ul style="list-style-type:none;">
+                  <li>Basic Text</li>
+                  <li>Enhanced</li>
+                  <li>Computer Aided Diagnosis (CAD)
+                    <ul>
+                      <li>Mammography</li>
+                      <li>Chest</li>
+                      <li>Colon</li>
+                      </ul>
+                  </li>
+                  <li>Procedure Log</li>
+                  <li>X-Ray Radiation Dose</li>
+                  <li>Comprehensive 3D</li>
+                  <li>Spectacle Prescription Report</li>
+                  <li>Macular Grid Thickness and Volume Report</li>
+                  <li>Implantation Plan</li>
+                </ul>
+              </section>
+              <section>
+                <h4>Example Basic Text SR (dcmdump)</h4>
+              </section>
+              <section>
+                <h4>Problems (opportunities!) with SR</h4>
+                <ul style="list-style-type:none;">
+                  <li class="fragment">Standard is so flexible, anything can go in</li>
+                  <li class="fragment">...recipe for vendor chaos</li>
+                  <li class="fragment">Barriers to building a CAD are now, suddenly, really low</li>
+                  <li class="fragment">CAD specification is
+                    <ul>
+                      <li>vague</li>
+                      <li>missing any spec for how to display results on images</li>
+                    </ul>
+                  </li>
+                  <li class="fragment">DICOM WG-23 is on the case!</li>
+                </ul>
+              </section>
+              <section>
+                <p>Want to know more about SR? There's a <a href="http://www.dclunie.com/pixelmed/DICOMSR.book.pdf">book</a>
+              </section>
+            </section>
+		  </div>
 		</div>
 
 		<script src="lib/js/head.min.js"></script>
